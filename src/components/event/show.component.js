@@ -42,33 +42,29 @@ export default function  ShowEvent() {
         <div className="col-12 col-sm-12 col-md-6">
           <div className="card">
             <div className="card-body">
-              <h4 className="card-title">Show Event</h4>
-              <hr />
-
-                  <Row> 
-                      <Col>
-                          <h6 className="card-title">Title</h6>
-                          <p className="card-text">{title}</p>
-                      </Col>
-                      <Col>
-                        <Link className='btn btn-primary mb-2 float-end' to={"/"}>
-                            Event List
-                        </Link>
-                      </Col>
-                  </Row>
-                <Row className="my-3">
-                    <Col>
-                        <h6 className="card-title">Date / Time</h6>
-                        <p className="card-text">{dateFormat(datetime, "ddd, mmm dS, yyyy. h:MM TT")}</p>
-                    </Col>
-                </Row>
+                  <div>
+                      <Link className='btn btn-primary mb-2 float-end' to={"/"}>
+                          Event List
+                      </Link>
+                      <h2 className="card-title">{title}</h2>
+                  </div>
+                  <hr />
+                  <div>
+                      <div className='float-end'>
+                          <h6 className="card-title">Time</h6>
+                          <p className="card-text">{dateFormat(datetime, "h:MM TT")}</p>
+                      </div>
+                      <div>
+                          <h6 className="card-title">Date</h6>
+                          <p className="card-text" >{dateFormat(datetime, "ddd, mmm dS, yyyy.")}</p>
+                      </div>
+                  </div>
                   <Row className="my-3">
                       <Col>
                           <h6 className="card-title">Description</h6>
                           <p className="card-text">{description}</p>
                       </Col>
                   </Row>
-
               <div>
                 <img className="card-img-top" width="150px" alt='' src={`http://localhost/event/public/storage/images/venues/${image}`}/>
               </div>
