@@ -54,8 +54,9 @@ export default function List() {
           <div className="row">
             <div className='col-12'>
                 <Link className='btn btn-primary mb-2 float-end' to={"/event/create"}>
-                    Create Product
+                    Create Event
                 </Link>
+                <h2>Events</h2>
             </div>
             <div className="col-12">
                 <div className="card card-body">

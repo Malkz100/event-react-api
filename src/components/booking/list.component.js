@@ -57,6 +57,7 @@ export default function List() {
                 <Link className='btn btn-primary mb-2 float-end' to={"/booking/create"}>
                     Create Booking
                 </Link>
+                <h2>Bookings</h2>
             </div>
             <div className="col-12">
                 <div className="card card-body">
