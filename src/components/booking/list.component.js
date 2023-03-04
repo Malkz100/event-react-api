@@ -3,22 +3,23 @@ import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button'
 import axios from 'axios';
 import Swal from 'sweetalert2'
-import dateFormat, { masks } from "dateformat";
+import dateFormat, { masks } from "dateformat"
+
 export default function List() {
 
-    const [events, setEvents] = useState([])
+    const [booking, setBooking] = useState([])
 
     useEffect(()=>{
-        fetchEvents()
+        fetchBooking()
     },[])
 
-    const fetchEvents = async () => {
-        await axios.get(`http://localhost/event/public/api/event`).then(({data})=>{
-            setEvents(data)
+    const fetchBooking = async () => {
+        await axios.get(`http://localhost/event/public/api/booking`).then(({data})=>{
+            setBooking(data)
         })
     }
 
-    const deleteEvent = async (id) => {
+    const deleteBooking = async (id) => {
         const isConfirm = await Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -35,12 +36,12 @@ export default function List() {
             return;
           }
 
-          await axios.delete(`http://localhost:8000/api/events/${id}`).then(({data})=>{
+          await axios.delete(`http://localhost:8000/api/booking/${id}`).then(({data})=>{
             Swal.fire({
                 icon:"success",
                 text:data.message
             })
-            fetchEvents()
+            fetchBooking()
           }).catch(({response:{data}})=>{
             Swal.fire({
                 text:data.message,
@@ -53,8 +54,8 @@ export default function List() {
       <div className="container">
           <div className="row">
             <div className='col-12'>
-                <Link className='btn btn-primary mb-2 float-end' to={"/event/create"}>
-                    Create Product
+                <Link className='btn btn-primary mb-2 float-end' to={"/booking/create"}>
+                    Create Booking
                 </Link>
             </div>
             <div className="col-12">
@@ -63,33 +64,28 @@ export default function List() {
                         <table className="table table-bordered mb-0 text-center">
                             <thead>
                                 <tr>
-                                    <th>Title</th>
-                                    <th>Description</th>
-                                    <th>Venue</th>
-                                    <th>Date Time</th>
+                                    <th>Customer</th>
+                                    <th>Event</th>
+                                    <th>Booked on</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {
-                                    events.length > 0 && (
-                                        events.map((row, key)=>(
+                                    booking.length > 0 && (
+                                        booking.map((row, key)=>(
                                             <tr key={key}>
-                                                <td>{row.title}</td>
-                                                <td>{row.description}</td>
-                                                <td>{row.venue['name']}</td>
-                                                <td>{dateFormat(row.datetime, "ddd, mmm dS yyyy h:MM TT")}</td>
-                                                    {/*<td>*/}
-                                                    {/*    <img width="50px" alt='' src={`http://localhost/event/public/storage/product/image/${row.image}`} />*/}
-                                                    {/*</td>*/}
+                                                <td>{row.customer_id}</td>
+                                                <td>{row.event['title']}</td>
+                                                <td>{dateFormat(row.booked_at, "ddd, mmm dS, yyyy  h:MM TT")}</td>
                                                 <td>
-                                                    <Link to={`/event/show/${row.id}`} className='btn btn-primary'>
+                                                    <Link to={`/booking/show/${row.id}`} className='btn btn-primary'>
                                                         Show
                                                     </Link>
-                                                    <Link to={`/event/edit/${row.id}`} className='btn btn-success me-2'>
+                                                    <Link to={`/booking/edit/${row.id}`} className='btn btn-success me-2'>
                                                         Edit
                                                     </Link>
-                                                    <Button variant="danger" onClick={()=>deleteEvent(row.id)}>
+                                                    <Button variant="danger" onClick={()=>deleteBooking(row.id)}>
                                                         Delete
                                                     </Button>
                                                 </td>

@@ -6,31 +6,30 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import dateFormat, { masks } from "dateformat";
 
-export default function  ShowEvent() {
+export default function  ShowBooking() {
 
-    const { id } = useParams()
-    const [title, setTitle] = useState("")
-    const [description, setDescription] = useState("")
-    const [venue, setVenue] = useState("")
+  const { id } = useParams()
+
+  const [title, setTitle] = useState("")
+    // const [description, setDescription] = useState("")
     const [image, setImage] = useState(null)
     const [datetime, setDatetime] = useState("")
-    const [price, setPrice] = useState("")
-    const [reduced_price, setReduced_price] = useState("")
+    const [event, setEvent] = useState("")
+    const [venue, setVenue] = useState("")
 
   useEffect(()=>{
-    fetchEvent()
+    fetchBooking()
   },[])
 
-  const fetchEvent = async () => {
-    await axios.get(`http://localhost/event/public/api/event/${id}`).then(({data})=>{
-      const { title, description, venue, image, datetime, price, reduced_price } = data.event
+  const fetchBooking = async () => {
+    await axios.get(`http://localhost/event/public/api/booking/${id}`).then(({data})=>{
+        const { title, image, datetime, event, venue } = data.booking
         setTitle(title)
-        setDescription(description)
-        setVenue(venue)
+     // setDescription(description)
         setImage(image)
         setDatetime(datetime)
-        setPrice(price)
-        setReduced_price(reduced_price)
+        setEvent(event)
+        setVenue(venue)
     }).catch(({response:{data}})=>{
       Swal.fire({
         text:data.message,
@@ -48,45 +47,50 @@ export default function  ShowEvent() {
           <div className="card">
             <div className="card-body">
                   <div>
-                      <Link className='btn btn-primary mb-2 float-end' to={"/event/list"}>
-                          Event List
+                      <Link className='btn btn-primary mb-2 float-end' to={"/booking/list"}>
+                          Booking List
                       </Link>
                       <h2 className="card-title">{title}</h2>
                   </div>
                   <hr />
                   <div>
-                      <div className='float-end'>
-                          <h5 className="card-title">Time</h5>
-                          <p className="card-text">{dateFormat(datetime, "h:MM TT")}</p>
-                      </div>
+                      {/*<div className='float-end'>*/}
+                      {/*    <h5 className="card-title">Time</h5>*/}
+                      {/*    <p className="card-text">{dateFormat(datetime, "h:MM TT")}</p>*/}
+                      {/*</div>*/}
                       <div>
-                          <h5 className="card-title">Date</h5>
-                          <p className="card-text" >{dateFormat(datetime, "ddd, mmm dS, yyyy.")}</p>
+                          <h5 className="card-title">Booked on:</h5>
+                          <p className="card-text" >{dateFormat(datetime, "ddd, mmm dS, yyyy. h:MM TT")}</p>
                       </div>
                   </div>
-
                 <Row className="my-3">
                     <Col>
-                        <h5 className="card-title">Venue</h5>
-                        <p className="card-text">{venue['name']}</p>
+                        <h5 className="card-title">Event</h5>
+                        <p className="card-text">{event['title']} - {dateFormat(event['datetime'], "ddd, mmm dS, yyyy. h:MM TT")}</p>
                     </Col>
                 </Row>
                   <Row className="my-3">
                       <Col>
                           <h5 className="card-title">Description</h5>
-                          <p className="card-text">{description}</p>
+                          <p className="card-text">{event['description']}</p>
                       </Col>
                   </Row>
                 <Row className="my-3">
                     <Col>
+                        <h5 className="card-title">Venue</h5>
+                        <p className="card-text">{event['venue_id']}</p>
+                    </Col>
+                </Row>
+                <Row className="my-3">
+                    <Col>
                         <h5 className="card-title">Price</h5>
-                        <p className="card-text">£{price}</p>
+                        <p className="card-text">£{event['price']}</p>
                     </Col>
                 </Row>
                 <Row className="my-3">
                     <Col>
                         <h5 className="card-title">Reduced Price</h5>
-                        <p className="card-text">£{reduced_price}</p>
+                        <p className="card-text">£{event['reduced_price']}</p>
                     </Col>
                 </Row>
               <div>
