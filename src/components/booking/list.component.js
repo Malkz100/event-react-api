@@ -8,6 +8,7 @@ import dateFormat, { masks } from "dateformat"
 export default function List() {
 
     const [booking, setBooking] = useState([])
+    const [customer, setCustomer] = useState([])
 
     useEffect(()=>{
         fetchBooking()
@@ -16,6 +17,7 @@ export default function List() {
     const fetchBooking = async () => {
         await axios.get(`http://localhost/event/public/api/booking`).then(({data})=>{
             setBooking(data)
+            setCustomer(data)
         })
     }
 
@@ -76,7 +78,7 @@ export default function List() {
                                     booking.length > 0 && (
                                         booking.map((row, key)=>(
                                             <tr key={key}>
-                                                <td>{row.customer_id}</td>
+                                                <td>{row.customer['username']}</td>
                                                 <td>{row.event['title']}</td>
                                                 <td>{dateFormat(row.booked_at, "ddd, mmm dS, yyyy  h:MM TT")}</td>
                                                 <td>
