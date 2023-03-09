@@ -14,12 +14,12 @@ export default function  ShowBooking() {
     // const [description, setDescription] = useState("")
     const [image, setImage] = useState(null)
     const [datetime, setDatetime] = useState("")
-    const [event, setEvent] = useState("")
-    const [venue, setVenue] = useState("")
+    const [event, setEvent] = useState({})
+    const [venue, setVenue] = useState({})
     const [name, setName] = useState("")
     const [booked_at, setBooked_at] = useState("")
-    const [customer, setCustomer] = useState([])
-    const [cost, setCost] = useState([])
+    const [customer, setCustomer] = useState({})
+    const [total_cost, setTotal_cost] = useState("")
 
   useEffect(()=>{
     fetchBooking()
@@ -29,21 +29,20 @@ export default function  ShowBooking() {
     await axios.get(`http://localhost/event/public/api/booking/${id}`).then(({data})=>{
         const { title, image, datetime, event, venue, booked_at, customer } = data.booking
         setTitle(title)
-     // setDescription(description)
         setImage(image)
         setDatetime(datetime)
         setEvent(event)
         setVenue(venue)
         setBooked_at(booked_at)
-        // setVenuename(venuename)
         setCustomer(customer)
-        setCost(cost)
+
+
 
          const {name} = data.venue
          setName(name)
 
-        // const {cost} = data.cost
-        // setCost(cost)
+         const {total_cost} = data
+         setTotal_cost(total_cost)
 
     }).catch(({response:{data}})=>{
       Swal.fire({
@@ -119,7 +118,7 @@ export default function  ShowBooking() {
                 <Row className="my-3">
                     <Col>
                         <h5 className="card-title">Total Price</h5>
-                        <p className="card-text">£{cost}</p>
+                        <p className="card-text">£{total_cost}</p>
                     </Col>
                 </Row>
               <div>
