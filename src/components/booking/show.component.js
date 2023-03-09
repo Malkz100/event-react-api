@@ -20,6 +20,8 @@ export default function  ShowBooking() {
     const [booked_at, setBooked_at] = useState("")
     const [customer, setCustomer] = useState({})
     const [total_cost, setTotal_cost] = useState("")
+    const [tickets_full_price, setTickets_full_price]= useState("")
+    const [tickets_reduced_price, setTickets_reduced_price]= useState("")
 
   useEffect(()=>{
     fetchBooking()
@@ -27,22 +29,29 @@ export default function  ShowBooking() {
 
   const fetchBooking = async () => {
     await axios.get(`http://localhost/event/public/api/booking/${id}`).then(({data})=>{
-        const { title, image, datetime, event, venue, booked_at, customer } = data.booking
+        const { title, datetime, event, venue, booked_at, customer } = data.booking
         setTitle(title)
-        setImage(image)
+
         setDatetime(datetime)
         setEvent(event)
         setVenue(venue)
         setBooked_at(booked_at)
         setCustomer(customer)
 
-
-
          const {name} = data.venue
          setName(name)
 
          const {total_cost} = data
          setTotal_cost(total_cost)
+
+        const {image} = data
+        setImage(image)
+
+        const {tickets_full_price} = data
+        setTickets_full_price(tickets_full_price)
+
+        const {tickets_reduced_price} = data
+        setTickets_reduced_price(tickets_reduced_price)
 
     }).catch(({response:{data}})=>{
       Swal.fire({
@@ -60,31 +69,20 @@ export default function  ShowBooking() {
         <div className="col-12 col-sm-12 col-md-6">
           <Row className="card">
             <div className="card-body">
-                  <div>
-                      <Link className='btn btn-primary mb-2 float-end' to={"/booking/list"}>
-                          Booking List
-                      </Link>
-                      <h2 className="card-title">{event['title'] }</h2>
-                  </div>
-                  <hr />
-                      <Row className="my-3">
-                          <Col>
-                            <h5 className="card-title">Customer:</h5>
-                            <p className="card-text" >{customer.username}</p>
-                          </Col>
-                      </Row>
+              <div>
+                  <Link className='btn btn-primary mb-2 float-end' to={"/booking/list"}>
+                      Booking List
+                  </Link>
+                  <h2 className="card-title">{event['title'] }</h2><p>Booked by {customer['username']}</p>
+              </div>
+              <hr />
 
-                      {/*<div className='float-end'>*/}
-                      {/*    <h5 className="card-title">Time</h5>*/}
-                      {/*    <p className="card-text">{dateFormat(datetime, "h:MM TT")}</p>*/}
-                      {/*</div>*/}
                 <Row classname="my-3">
-                    <Col>
-                          <h5 className="card-title">Booked on:</h5>
-                          <p className="card-text" >{dateFormat(booked_at, "ddd, mmm dS, yyyy. h:MM TT")}</p>
-                    </Col>
-                  </Row>
-
+                   <Col>
+                      <h5 className="card-title">Booked on:</h5>
+                      <p className="card-text" >{dateFormat(booked_at, "ddd, mmm dS, yyyy. h:MM TT")}</p>
+                   </Col>
+                </Row>
                 <Row className="my-3">
                     <Col>
                         <h5 className="card-title">Event</h5>
@@ -105,14 +103,14 @@ export default function  ShowBooking() {
                 </Row>
                 <Row className="my-3">
                     <Col>
-                        <h5 className="card-title">Price</h5>
-                        <p className="card-text">£{event['price']}</p>
+                        <h5 className="card-title">Full Price Tickets</h5>
+                        <p className="card-text">{tickets_full_price} & £{event['price']}</p>
                     </Col>
                 </Row>
                 <Row className="my-3">
                     <Col>
-                        <h5 className="card-title">Reduced Price</h5>
-                        <p className="card-text">£{event['reduced_price']}</p>
+                        <h5 className="card-title">Reduced Price Tickets</h5>
+                        <p className="card-text">{tickets_reduced_price} & £{event['reduced_price']}</p>
                     </Col>
                 </Row>
                 <Row className="my-3">
@@ -124,11 +122,9 @@ export default function  ShowBooking() {
               <div>
                 <img className="card-img-top" width="150px" alt='' src={`http://localhost/event/public/storage/images/venues/${image}`}/>
               </div>
-
             </div>
           </Row>
           </div>
-
         </div>
       </div>
   )
