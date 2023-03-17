@@ -35,7 +35,7 @@ export default function List() {
             return;
           }
 
-          await axios.delete(`http://localhost:8000/api/events/${id}`).then(({data})=>{
+          await axios.delete(`http://localhost/event/public/api/customer/${id}`).then(({data})=>{
             Swal.fire({
                 icon:"success",
                 text:data.message

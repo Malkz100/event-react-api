@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { Link, useParams } from 'react-router-dom'
+import {Link, useNavigate, useParams} from 'react-router-dom'
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
 export default function CreateCustomer() {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         username: "",
         title: "",
@@ -35,10 +36,11 @@ export default function CreateCustomer() {
             .then((response) => {
                 Swal.fire({
                     title: "Success!",
-                    text: "Form submitted successfully!",
+                    text: "Customer added!",
                     icon: "success",
                     confirmButtonText: "OK",
                 });
+                navigate("/customer/list")
             })
             .catch((error) => {
                 console.log(error);
@@ -52,7 +54,13 @@ export default function CreateCustomer() {
     };
 
     return (
-        <div>
+        <div className="container">
+            <div className='col-12'>
+                <Link className='btn btn-primary mb-2 float-end' to={"/customer/list"}>
+                    Customer list
+                </Link>
+                <h2>Add Customer</h2>
+            </div>
             <Form onSubmit={handleSubmit}>
                 <Row>
                     <Col>
